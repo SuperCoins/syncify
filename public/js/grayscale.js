@@ -1,4 +1,6 @@
-window.onload = function() {
+$(document).ready(onload);
+
+function onload() {
     var port = Number(process.env.PORT || 8080);
     var socket = io.connect('http://localhost:' + port);
 
