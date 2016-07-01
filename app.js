@@ -23,8 +23,9 @@ app.get('/image', function(req, res) {
         console.log(data);
     });
 });
+var port = Number(process.env.PORT || 8080);
 
-var io = require('socket.io').listen(app.listen(8080));
+var io = require('socket.io').listen(app.listen(port));
 console.log('Listening on port 8080');
 
 io.sockets.on('connection', function(socket) {
