@@ -26,7 +26,7 @@ app.get('/image', function(req, res) {
 var port = Number(process.env.PORT || 8080);
 
 var io = require('socket.io').listen(app.listen(port));
-console.log('Listening on port 8080');
+console.log('Listening on port ' + port);
 
 io.sockets.on('connection', function(socket) {
     // Welcome new connections

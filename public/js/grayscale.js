@@ -1,6 +1,6 @@
 window.onload = function() {
-
-    var socket = io.connect('http://localhost:8080');
+    var port = Number(process.env.PORT || 8080);
+    var socket = io.connect('http://localhost:' + port);
 
     socket.on('message', function(data) {
         if (data.message) {
