@@ -20,6 +20,7 @@ window.onload = function() {
             socket.emit('refresh');
             console.log(data.song.uri);
             window.location.href = data.song.uri + '#0:01';
+            document.title = data.song.name;
         }
     });
 
