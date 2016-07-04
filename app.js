@@ -1,5 +1,6 @@
 var http = require('http');
 var spotifyModule = require('./spotifyModule');
+var timingModule = require('./timingModule');
 var prettyjson = require('prettyjson');
 var express = require('express');
 
@@ -46,10 +47,15 @@ io.sockets.on('connection', function(socket) {
 
     // Play request
     socket.on('play', function() {
-        console.log('Client has requested a song');
+        console.log('Client has requested a new song');
+
         spotifyModule.newSong(function(song) {
-            io.sockets.emit('play', {
-                song: song
+            timingModule.play(song);
+            timingModule.getSongTime(function(time) {
+                song.time = time;
+                io.sockets.emit('play', {
+                    song: song
+                });
             });
         });
     });
