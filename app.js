@@ -10,6 +10,7 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
 var songs = spotifyModule.songs;
+var currentSong;
 
 app.get('/', function(req, res) {
     console.log('Request: Homepage');
@@ -50,22 +51,33 @@ io.sockets.on('connection', function(socket) {
         console.log('Client has requested a new song');
 
         spotifyModule.newSong(function(song) {
-            timingModule.play(song);
-            var songTime;
-            timingModule.getSongTime(function(time) {
-                songTime = time;
+            currentSong = song;
+            song.time = '#0:01';
+            timingModule.play(song, function(endTime) {
+                //TODO: Set interval here
             });
-            song.time = songTime;
             io.sockets.emit('play', {
                 song: song
             });
         });
     });
 
+    // Socket refresh
     socket.on('refresh', function() {
-        console.log('Client has requested a refresh');
+        var songTime;
+        timingModule.getSongTime(function(time) {
+            songTime = time;
+        });
+        currentSong.time = songTime;
+        io.sockets.emit('play', {
+            song: currentSong
+        });
+    });
+
+    socket.on('update', function() {
+        console.log('Client has requested a song time update');
         spotifyModule.getSongs(function(songs) {
-            socket.emit('refresh', {
+            socket.emit('update', {
                 songs: songs
             });
         });

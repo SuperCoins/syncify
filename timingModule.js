@@ -13,17 +13,19 @@ exports.disconnected = function () {
     connected -= 1;
 };
 
-exports.play = function (song) {
+exports.play = function (song, callback) {
     console.log('Playing new song: ');
     console.log(prettyjson.render(song));
     startTime = new Date().getTime();
     songLength = song.length;
     endTime = startTime + songLength;
+
+    callback(endTime);
 };
 
 exports.getSongTime = function (callback) {
     var currentTime = new Date().getTime();
-    var timeDiff = endTime - startTime;
+    var timeDiff = currentTime - startTime;
     var totalSeconds = Math.round(timeDiff / 1000);
     var minutes = Math.floor(totalSeconds / 60);
     var seconds = totalSeconds % 60;

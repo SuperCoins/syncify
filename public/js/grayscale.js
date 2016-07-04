@@ -21,7 +21,7 @@ window.onload = function() {
             console.log(data.song.name);
             document.getElementById('song-name').innerHTML = data.song.name + ' - ' + data.song.artist;
             showArtwork(artwork, currentSong);
-            socket.emit('refresh');
+            socket.emit('update');
             data.song.uri += data.song.time;
             console.log(data.song.uri);
             window.location.href = data.song.uri;
@@ -36,14 +36,14 @@ window.onload = function() {
         }
     });
 
-    socket.on('refresh', function(data) {
-        console.log('Refreshing song list');
+    socket.on('update', function(data) {
+        console.log('Updating song labels');
         updateLabels(data.songs);
     });
 
-    document.getElementById('shuffleButton').onclick = function() {
-        console.log('Commencing shuffle');
-        socket.emit('shuffle');
+    document.getElementById('refreshButton').onclick = function() {
+        console.log('Commencing refresh');
+        socket.emit('refresh');
     };
 
     document.getElementById('playButton').onclick = function() {
