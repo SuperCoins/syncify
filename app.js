@@ -11,6 +11,7 @@ app.set('view engine', 'ejs');
 
 var songs = spotifyModule.songs;
 var currentSong;
+var timer;
 
 app.get('/', function(req, res) {
     console.log('Request: Homepage');
@@ -55,6 +56,7 @@ io.sockets.on('connection', function(socket) {
     // Play request
     socket.on('play', function() {
         console.log('Client has requested a new song');
+        clearTimeout(timer);
         playSong();
     });
 
@@ -85,16 +87,16 @@ var playSong = function() {
         currentSong = song;
         currentSong.time = '#0:01';
         timingModule.play(currentSong, function(songLength) {
-            var timer = setTimeout(function() {
+            timer = setTimeout(function() {
+                // Looks like the timeout works now
                 playSong(); //Play new song when the old has finished
-            }, songLength);
+            }, songLength - 1000);
 
             var time = timingModule.timeToString(songLength);
 
             console.log('Song should finish in: ' + time);
         });
     });
-    // This callback should emit a play packet with the song
     io.sockets.emit('play', {
         song: currentSong
     });
