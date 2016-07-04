@@ -4,6 +4,19 @@ window.onload = function() {
     var currentSong;
     var artwork = false;
 
+    document.getElementById('playButton').style.display = '';
+    document.getElementById('refreshButton').style.display = 'none';
+
+    socket.emit('init');
+
+    socket.on('init', function(data) {
+        console.log('Server: Welcome');
+        if (data.checkPlaying) {
+            document.getElementById('playButton').style.display = 'none';
+            document.getElementById('refreshButton').style.display = '';
+        }
+    });
+
     socket.on('message', function(data) {
         if (data.message) {
             console.log('Server: ' + data.message);
@@ -47,6 +60,13 @@ window.onload = function() {
     };
 
     document.getElementById('playButton').onclick = function() {
+        document.getElementById('playButton').style.display = 'none';
+        document.getElementById('refreshButton').style.display = '';
+        console.log('Requesting Song');
+        socket.emit('play');
+    };
+
+    document.getElementById('nextButton').onclick = function() {
         console.log('Requesting Song');
         socket.emit('play');
     };
@@ -78,8 +98,6 @@ var updateLabels = function(songs) {
 var showArtwork = function(artwork, song) {
     if(artwork && song) {
         console.log("Setting background to album artwork: ");
-        var text;
-        console.log(text);
         document.getElementById('heading').style.display = 'none';
         document.getElementById('artwork').src = song.image;
         document.getElementById('artwork-div').style.display = '';

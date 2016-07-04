@@ -26,8 +26,14 @@ console.log('Listening on port ' + port);
 
 io.sockets.on('connection', function(socket) {
     // Welcome new connections
-    socket.emit('message', {
-        message: 'Welcome'
+    var check;
+    if (currentSong) {
+        check = true;
+    } else {
+        check = false;
+    }
+    socket.emit('init', {
+        checkPlaying: check
     });
 
     // Display any messages received from clients
