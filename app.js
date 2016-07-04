@@ -51,11 +51,12 @@ io.sockets.on('connection', function(socket) {
 
         spotifyModule.newSong(function(song) {
             timingModule.play(song);
+            var songTime;
             timingModule.getSongTime(function(time) {
-                song.time = time;
-                io.sockets.emit('play', {
-                    song: song
-                });
+                songTime = time;
+            });
+            io.sockets.emit('play', {
+                song: song
             });
         });
     });
