@@ -1,6 +1,8 @@
 window.onload = function() {
 
     var socket = io();
+    var currentSong;
+    var artwork = false;
 
     socket.on('message', function(data) {
         if (data.message) {
@@ -15,8 +17,10 @@ window.onload = function() {
 
     socket.on('play', function(data) {
         if (data.song) {
+            currentSong = data.song;
             console.log(data.song.name);
-            document.getElementById('song-loc').innerHTML = data.song.name + ' - ' + data.song.artist;
+            document.getElementById('song-name').innerHTML = data.song.name + ' - ' + data.song.artist;
+            showArtwork(artwork, currentSong);
             socket.emit('refresh');
             console.log(data.song.uri);
             window.location.href = data.song.uri + '#0:01';
@@ -45,6 +49,15 @@ window.onload = function() {
         console.log('Requesting Song');
         socket.emit('play');
     };
+
+    document.getElementById('imageButton').onclick = function() {
+        if (artwork) {
+            artwork = false;
+        } else {
+            artwork = true;
+        }
+        showArtwork(artwork, currentSong);
+    };
 };
 
 // Update the labels with the songs given
@@ -58,5 +71,21 @@ var updateLabels = function(songs) {
         } else {
             document.getElementById('label' + i).innerHTML = '';
         }
+    }
+};
+
+var showArtwork = function(artwork, song) {
+    if(artwork && song) {
+        console.log("Setting background to album artwork: ");
+        var text;
+        console.log(text);
+        document.getElementById('heading').style.display = 'none';
+        document.getElementById('artwork').src = song.image;
+        document.getElementById('artwork-div').style.display = '';
+    } else {
+        console.log("Setting background to default");
+        document.getElementById('artwork-div').style.display = 'none';
+        document.getElementById('artwork').src = '';
+        document.getElementById('heading').style.display = '';
     }
 };

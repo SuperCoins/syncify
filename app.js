@@ -17,12 +17,6 @@ app.get('/', function(req, res) {
     });
 });
 
-app.get('/image', function(req, res) {
-    console.log('Image request');
-    spotifyModule.getArtwork('0sNOF9WDwhWunNAHPD3Baj', function(data) {
-        console.log(data);
-    });
-});
 var port = Number(process.env.PORT || 8080);
 
 var io = require('socket.io').listen(app.listen(port));
