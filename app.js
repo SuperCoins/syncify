@@ -53,7 +53,7 @@ io.sockets.on('connection', function(socket) {
     socket.on('play', function() {
         console.log('Client has requested a song');
         spotifyModule.newSong(function(song) {
-            socket.broadcast.emit('play', {
+            io.sockets.emit('play', {
                 song: song
             });
         });
