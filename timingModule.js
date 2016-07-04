@@ -20,7 +20,7 @@ exports.play = function (song, callback) {
     songLength = song.length;
     endTime = startTime + songLength;
 
-    callback(endTime);
+    callback(songLength);
 };
 
 exports.getSongTime = function (callback) {
@@ -29,6 +29,10 @@ exports.getSongTime = function (callback) {
     var totalSeconds = Math.round(timeDiff / 1000);
     var minutes = Math.floor(totalSeconds / 60);
     var seconds = totalSeconds % 60;
+    seconds += 1; // To account for starting at #0:01
+    if (seconds < 10) {
+        seconds = '0' + seconds;
+    }
 
     var time = '#' + minutes + ':' + seconds;
 

@@ -55,17 +55,7 @@ io.sockets.on('connection', function(socket) {
     // Play request
     socket.on('play', function() {
         console.log('Client has requested a new song');
-
-        spotifyModule.newSong(function(song) {
-            currentSong = song;
-            song.time = '#0:01';
-            timingModule.play(song, function(endTime) {
-                //TODO: Set interval here
-            });
-            io.sockets.emit('play', {
-                song: song
-            });
-        });
+        playSong();
     });
 
     // Socket refresh
@@ -89,3 +79,20 @@ io.sockets.on('connection', function(socket) {
         });
     });
 });
+
+var playSong = function() {
+    spotifyModule.newSong(function(song) {
+        currentSong = song;
+        currentSong.time = '#0:01';
+        timingModule.play(currentSong, function(songLength) {
+            var timer = setTimeout(function() {
+                playSong(); //Play new song when the old has finished
+            }, songLength);
+            console.log('Song should finish in: ' + songLength);
+        });
+    });
+    // This callback should emit a play packet with the song
+    io.sockets.emit('play', {
+        song: currentSong
+    });
+};

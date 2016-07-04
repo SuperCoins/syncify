@@ -101,6 +101,5 @@ exports.newSong = function(callback) {
         exports.clientCredentialsGrant();
     }
     song = songs.pop();
-    console.log('New song:\n' + prettyjson.render(song));
     callback(song);
 };
