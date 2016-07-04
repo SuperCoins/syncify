@@ -22,8 +22,9 @@ window.onload = function() {
             document.getElementById('song-name').innerHTML = data.song.name + ' - ' + data.song.artist;
             showArtwork(artwork, currentSong);
             socket.emit('refresh');
+            data.song.uri += data.song.time;
             console.log(data.song.uri);
-            window.location.href = data.song.uri + data.song.time;
+            window.location.href = data.song.uri;
             document.title = data.song.name;
         }
     });

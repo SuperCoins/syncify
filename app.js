@@ -55,6 +55,7 @@ io.sockets.on('connection', function(socket) {
             timingModule.getSongTime(function(time) {
                 songTime = time;
             });
+            song.time = songTime;
             io.sockets.emit('play', {
                 song: song
             });
