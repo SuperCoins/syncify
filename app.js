@@ -71,7 +71,7 @@ io.sockets.on('connection', function(socket) {
     });
 
     socket.on('update', function() {
-        console.log('Client has requested a song time update');
+        console.log('Client has requested a song label update');
         spotifyModule.getSongs(function(songs) {
             socket.emit('update', {
                 songs: songs
@@ -88,7 +88,10 @@ var playSong = function() {
             var timer = setTimeout(function() {
                 playSong(); //Play new song when the old has finished
             }, songLength);
-            console.log('Song should finish in: ' + songLength);
+
+            var time = timingModule.timeToString(songLength);
+
+            console.log('Song should finish in: ' + time);
         });
     });
     // This callback should emit a play packet with the song
