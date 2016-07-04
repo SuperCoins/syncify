@@ -43,7 +43,8 @@ io.sockets.on('connection', function(socket) {
     socket.on('shuffle', function() {
         console.log('Client has requested a shuffle');
         spotifyModule.shuffleSongs(function(data) {
-            socket.emit('shuffle', {
+            // Notify all clients of the shuffle
+            io.sockets.emit('shuffle', {
                 songs: data
             });
         });
