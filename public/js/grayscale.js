@@ -23,7 +23,7 @@ window.onload = function() {
             showArtwork(artwork, currentSong);
             socket.emit('refresh');
             console.log(data.song.uri);
-            window.location.href = data.song.uri + '#' + data.song.time;
+            window.location.href = data.song.uri + data.song.time;
             document.title = data.song.name;
         }
     });

@@ -22,7 +22,7 @@ exports.play = function (song) {
 };
 
 exports.getSongTime = function (callback) {
-    var currentTime = new Date.getTime();
+    var currentTime = new Date().getTime();
     var timeDiff = endTime - startTime;
     var totalSeconds = Math.round(timeDiff / 1000);
     var minutes = Math.floor(totalSeconds / 60);
